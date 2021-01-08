@@ -8,8 +8,10 @@ gsheets -> xlsx -> xml -> uploaded -> data entry & recalculating -> submit -> sy
 
 ## References
 
-https://github.com/medic/cht-docs/issues/386
-https://xlsform.org/en/
+* https://docs.communityhealthtoolkit.org/apps/tutorials/app-forms/
+* https://docs.communityhealthtoolkit.org/apps/reference/forms/app/
+* https://github.com/medic/cht-docs/issues/386
+* https://xlsform.org/en/
 
 
 ## Prereqs 
