@@ -6,9 +6,11 @@ revealOptions:
 
 # App Building for Techies
 
-A crash course for engineering folks on how to build an [CHT](https://communityhealthtoolkit.org/) app
+A crash course for engineering folks on how to build a [CHT](https://communityhealthtoolkit.org/) app
 
-Built with [reveal-md](https://github.com/webpro/reveal-md) by ashley@medicmobile.org
+[mrjones](mailto:ashley@medicmobile.org)
+
+Made w/ [reveal-md](https://github.com/webpro/reveal-md)
 
 ---
 
@@ -16,7 +18,7 @@ Built with [reveal-md](https://github.com/webpro/reveal-md) by ashley@medicmobil
 
 Use `medic-conf` and the browser to:
 
-gsheets -> xlsx -> xml -> uploaded -> data entry & recalculating -> submit -> sync -> JSON
+gsheets -> xlsx -> xml -> upload -> data entry & recalculating -> submit -> sync -> JSON
 
 
 ---
@@ -76,7 +78,7 @@ per  [CHTS development.md](https://github.com/medic/cht-core/blob/master/DEVELOP
 
 ## create your gsheets files
 
-in google docs, copy this sheet to a new file called test_form:
+Copy this sheet to a new file called test_form:
 
 https://docs.google.com/spreadsheets/d/1EWwkyhhle05fHj5hoKlNgABNKOrgp30BFZrbpYT1AHU
 
@@ -89,7 +91,7 @@ go to settings worksheet tab and change:
 
 ## edit synched forms 
  
-`forms-on-google-drive.json` only have your new form:
+Edit `forms-on-google-drive.json` only have your new form:
     
     {"app/test_form.xlsx": "1OX87YC6kAOvlC1axQs_PRXR4hABBgttjUhBL6fMdFSk"} 
     
@@ -109,7 +111,7 @@ note that medic-conf allows you to string together multiple commands
 
 ## export -> convert ->  upload
 
-let's import our new one by adding convert-app-forms (xlsx -> xml) and upload-app-forms:
+Let's import our new one by adding convert-app-forms (xlsx -> xml) and upload-app-forms (xml -> CHT):
 
     medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive convert-app-forms upload-app-forms -- test_form
 
@@ -120,52 +122,80 @@ see if it's there!
 
 ---
 
+## Form properties json
 
-before we start editing the form, let's update some properties. create a forms/app/test_form.properties.json file with the following:
+Before we start form building, let's set some properties via the `forms/app/test_form.properties.json`:
 
     {
-    "title": "Test Form",
-    "icon": "draft-icon",
-    "context": {
-        "person": true,
-        "place": false,
-        "expression": "contact.type === 'person' && summary.alive && (!contact.date_of_birth ||  ageInYears(contact) < 5)"
-    }
+        "title": "Test Form",
+        "icon": "draft-icon",
+        "context": {
+            "person": true,
+            "place": false,
+            "expression": "contact.type === 'person' && summary.alive && (!contact.date_of_birth ||  ageInYears(contact) < 5)"
+        }
     }
 
 ---
 
-now let's add a "upload-resources" to the medic-conf to send this as well:
+## Go faster medic-conf
+
+Add `upload-resources` to the `medic-conf` to send the json as well:
 
     medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
 
 ---
 
-back on your server, form is no longer available anywhere but on patients <5
+## Updated properties
 
-review xforms structure:
-    * Inputs
-    * Top level calculation fields
-    * Pages of questions
-    * Summary page
-    * Data outputs
+Back on your server, form is no longer available anywhere but on patients who are <= 5
+
+http://localhost:5988/#/reports/
 
 ---
 
-Let's add some questions! below "Top level calculation fields" , add a bunch of blank lines and copy the first note:
+## xforms structure
+
+* Inputs
+* Top level calculation fields
+* Pages of questions
+* Summary page
+* Data outputs
+
+---
+
+## Your 1st line of xform code
+
+Let's add some questions! 
+
+Below "Top level calculation fields", add a bunch of 
+blank lines and copy the first note
+    
     note	register_note	Welcome to my first form
 
+[<sup id="footnote-id">1</sup>](#fn1)
+
 ---
+
+## Rinse and repeat
 
 re-run our fave medic-conf command (you could trim off "upload-resources")
 
+    medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+
 ---
 
-reload the form and you should see your note
+## reload reload reload 
+
+reload the form in the browser and you should see your note
 
 you are now an app builder!
 
+Note : fastest to cancel and start again vs reload
+
 ---
+
+## Now with 100% more dates
 
 let's add a date input after the note
 
@@ -173,43 +203,67 @@ let's add a date input after the note
 
 ---
 
+## Rinse and repeat & reload reload reload 
+
 re-run our fave medic-conf command & reload the browser. note it's on page two of form
 
+    medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+
 ---
+
+## field-list 
 
 let's put the two on one page
    
-``` 
-begin group	hello_world	Hello World App!									field-list
-note	welcome_note	Welcome to my first form									
-date	how_old	What's your fave date?									
-end group	
-``` 
+    begin group	hello_world	Hello World App!									field-list
+    note	welcome_note	Welcome to my first form									
+    date	how_old	What's your fave date?									
+    end group	
+
 
 ---
 
+## constraints
+
 Let's ask  them about past dates by adding this to constraints:
+
     decimal-date-time(.) < floor(decimal-date-time(today()))
 
 ---
 
+## select one
+
 let's only show the date if they like old dates. add this above the date row:
+
     select_one yes_no	old_dates	Do you like old dates?
 
+Note values in choices tab
+
 ---
+
+## relevant
 
 and now, add this to "relevant" column for the date input:
+
     selected(${old_dates}, 'yes')
 
-
 ---
+
+## calculate 
 
 finally, let's calculate something! 100 years after the date.  Add a row in the above "calculate" section:
 
-```
     calculate	hundred_years	NO_LABEL																		format-date-time(date-time(floor(decimal-date-time(${how_old})) + 36525), "%Y-%m-%d")															
     And then add this as the last row in your group:
     note	hundred_note	This is the date in 100 years from your date: ${hundred_years}								decimal-date-time(${how_old}) < floor(decimal-date-time(today()))
-```
+
 
 ---
+
+## Rinse and repeat & reload reload reload 
+
+re-run our fave medic-conf command & reload the browser. note it's on page two of form
+
+    medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+
+a fitting end - you do this SO. MANY. TIMES. ;)
