@@ -8,9 +8,9 @@ revealOptions:
 
 A crash course for engineering folks on how to build a [CHT](https://communityhealthtoolkit.org/) app
 
-[mrjones](mailto:ashley@medicmobile.org)
-
-Made w/ [reveal-md](https://github.com/webpro/reveal-md)
+* By: [mrjones](https://github.com/mrjones-plip)
+* Source: [app-building repo](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building)
+* Made: [reveal-md](https://github.com/webpro/reveal-md)
 
 ---
 
@@ -25,15 +25,15 @@ gsheets -> xlsx -> xml -> upload -> data entry & recalculating -> submit -> sync
 
 ## References
 
-https://docs.communityhealthtoolkit.org/apps/tutorials/app-forms/
-https://docs.communityhealthtoolkit.org/apps/reference/forms/app/
-https://github.com/medic/cht-docs/issues/386
-https://xlsform.org/en/
+* [CHT Docs: app forms](https://docs.communityhealthtoolkit.org/apps/tutorials/app-forms) 
+* [CHT Docs: reference: forms](https://docs.communityhealthtoolkit.org/apps/reference/forms/app/)
+* [CHT Docs: Cheat Sheet PR](https://github.com/medic/cht-docs/issues/386)
+* [xls form reference site](https://xlsform.org/en/)
 
 
 ---
 
-## Prerequisites 
+## Prerequisites 1
 
 
     // install couch (use )
@@ -60,6 +60,14 @@ https://xlsform.org/en/
     // ensure it's up http://localhost:5988
 
 per  [CHTS development.md](https://github.com/medic/cht-core/blob/master/DEVELOPMENT.md)
+
+---
+
+## Prerequisites 2
+
+Clone this repo:
+
+    git clone https://github.com/mrjones-plip/mrjones-medic-scratch.git
 
 ---
 
@@ -171,9 +179,10 @@ Let's add some questions!
 Below "Top level calculation fields", add a bunch of 
 blank lines and copy the first note
     
-    note	register_note	Welcome to my first form
-
-[<sup id="footnote-id">1</sup>](#fn1)
+```
+note	register_note	Welcome to my first form
+```
+[source](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building#your-1st-line-of-xform-code)
 
 ---
 
@@ -199,7 +208,10 @@ Note : fastest to cancel and start again vs reload
 
 let's add a date input after the note
 
-    date	how_old	What's your fave date?
+```
+date	how_old	What's your fave date?
+```
+[source](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building#now-with-100-more-dates)
 
 ---
 
@@ -267,3 +279,18 @@ re-run our fave medic-conf command & reload the browser. note it's on page two o
     medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
 
 a fitting end - you do this SO. MANY. TIMES. ;)
+
+---
+
+## Next time
+
+* [Tasks](https://docs.communityhealthtoolkit.org/apps/reference/tasks/)
+* [Targets](https://docs.communityhealthtoolkit.org/apps/reference/targets/)
+
+---
+
+## Thanks!
+
+* By: [mrjones](https://github.com/mrjones-plip)
+* Source: [app-building repo](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building)
+* Made: [reveal-md](https://github.com/webpro/reveal-md)
