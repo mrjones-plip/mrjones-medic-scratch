@@ -247,6 +247,14 @@ Let's ask  them about past dates by adding this to constraints:
 
 ---
 
+## Rinse and repeat & reload reload reload
+
+re-run our fave medic-conf command & reload the browser. note it's on page two of form
+
+    medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+
+---
+
 ## select one
 
 let's only show the date if they like old dates. add this above the date row:
@@ -262,6 +270,18 @@ Note values in choices tab
 and now, add this to "relevant" column for the date input:
 
     selected(${old_dates}, 'yes')
+
+Tell the user how to fix bad data! In "constraint_message::en" field, add:
+
+    The date must be in the past.
+
+---
+
+## Rinse and repeat & reload reload reload
+
+re-run our fave medic-conf command & reload the browser. note it's on page two of form
+
+    medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
 
 ---
 
