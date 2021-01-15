@@ -25,9 +25,13 @@ gsheets -> xlsx -> xml -> upload -> data entry & recalculating -> submit -> sync
 
 ## References
 
-* [CHT Docs: app forms](https://docs.communityhealthtoolkit.org/apps/tutorials/app-forms) 
-* [CHT Docs: reference: forms](https://docs.communityhealthtoolkit.org/apps/reference/forms/app/)
-* [CHT Docs: Cheat Sheet PR](https://github.com/medic/cht-docs/issues/386)
+* CHT Docs
+  * [App forms tutorial](https://docs.communityhealthtoolkit.org/apps/tutorials/app-forms) 
+  * [Forms Reference](https://docs.communityhealthtoolkit.org/apps/reference/forms/app/)
+* [Docs Cheat Sheet PR](https://github.com/medic/cht-docs/issues/386)
+* Capacity Building:
+  * [Modules List](https://docs.google.com/document/d/1E_GEAMk8LwmopGxPg6r5ipOk4-4vi5_A_oUaNd_3afs/edit)
+  * [App Forms Module](https://docs.google.com/document/d/1b-3TIOwfPYjZ5Bb0ybDeBk9S584D1IbvcnsYcTehLfs/edit) (-> App forms tutorial)   
 * [xls form reference site](https://xlsform.org/en/)
 
 
@@ -79,6 +83,8 @@ Clone this repo:
 
 * create a new Facility with a contact
 * associate your admin user the new contact
+
+(note diff between admin users, offline users)
 
 ---
 
@@ -213,7 +219,7 @@ Note : fastest to cancel and start again vs reload
 let's add a date input after the note
 
 ```
-date	how_old	What's your fave date?
+date	fave_past_date	What's your fave past date?
 ```
 [source](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building#now-with-100-more-dates)
 
@@ -233,7 +239,7 @@ let's put the two on one page
    
     begin group	hello_world	Hello World App!									field-list
     note	welcome_note	Welcome to my first form									
-    date	how_old	What's your fave date?									
+    date	fave_past_date	What's your fave past date?									
     end group	
 
 
@@ -289,10 +295,20 @@ re-run our fave medic-conf command & reload the browser. note it's on page two o
 
 finally, let's calculate something! 100 years after the date.  Add a row in the above "calculate" section:
 
-    calculate	hundred_years	NO_LABEL																		format-date-time(date-time(floor(decimal-date-time(${how_old})) + 36525), "%Y-%m-%d")															
-    And then add this as the last row in your group:
-    note	hundred_note	This is the date in 100 years from your date: ${hundred_years}								decimal-date-time(${how_old}) < floor(decimal-date-time(today()))
+    calculate	hundred_years	NO_LABEL																		format-date-time(date-time(floor(decimal-date-time(${fave_past_date})) + 36525), "%Y-%m-%d")															
 
+And then add this as the last row in your group:
+
+---
+
+## Completed form
+
+    begin group	hello_world	Hello World App!									field-list		
+    note	welcome_note	Welcome to my first form											
+    select_one yes_no	old_dates	Do you like old dates?											
+    date	fave_past_date	What's your fave past date?								selected(${old_dates}, 'yes')		decimal-date-time(.) < floor(decimal-date-time(today()))	The date must be in the past.
+    note	hundred_note	This is the date in 100 years from your date: ${hundred_years}								decimal-date-time(${fave_past_date}) < floor(decimal-date-time(today()))			
+    end group
 
 ---
 
