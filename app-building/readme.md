@@ -75,7 +75,9 @@ per  [CHTS development.md](https://github.com/medic/cht-core/blob/master/DEVELOP
 
 Clone this repo:
 
-    git clone https://github.com/mrjones-plip/mrjones-medic-scratch.git
+```shell
+git clone https://github.com/mrjones-plip/mrjones-medic-scratch.git
+```
 
 ---
 
@@ -111,8 +113,10 @@ go to settings worksheet tab and change:
  
 Edit `forms-on-google-drive.json` only have your new form:
     
-    {"app/test_form.xlsx": "1OX87YC6kAOvlC1axQs_PRXR4hABBgttjUhBL6fMdFSk"} 
-    
+ ```json
+{"app/test_form.xlsx": "1OX87YC6kAOvlC1axQs_PRXR4hABBgttjUhBL6fMdFSk"}
+``` 
+
 Replace your ID from prior step
 
 ---
@@ -121,7 +125,9 @@ Replace your ID from prior step
 
 test export to local file:
 
-    medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive 
+```shell
+medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive 
+```
 
 note that medic-conf allows you to string together multiple commands
 
@@ -131,7 +137,9 @@ note that medic-conf allows you to string together multiple commands
 
 Let's import our new one by adding convert-app-forms (xlsx -> xml) and upload-app-forms (xml -> CHT):
 
-    medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive convert-app-forms upload-app-forms -- test_form
+```shell
+medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive convert-app-forms upload-app-forms -- test_form
+```
 
 see if it's there!
 
@@ -160,7 +168,9 @@ Before we start form building, let's set some properties via the `forms/app/test
 
 Add `upload-resources` to the `medic-conf` to send the json as well:
 
-    medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+```shell
+medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+```
 
 ---
 
@@ -200,7 +210,9 @@ note	register_note	Welcome to my first form
 
 re-run our fave medic-conf command (you could trim off "upload-resources")
 
-    medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+```shell
+medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+```
 
 ---
 
@@ -218,7 +230,7 @@ Note : fastest to cancel and start again vs reload
 
 let's add a date input after the note
 
-```
+```text
 date	fave_past_date	What's your fave past date?
 ```
 [source](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building#now-with-100-more-dates)
@@ -229,19 +241,21 @@ date	fave_past_date	What's your fave past date?
 
 re-run our fave medic-conf command & reload the browser. note it's on page two of form
 
-    medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
-
+```shell
+medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+```
 ---
 
 ## field-list 
 
 let's put the two on one page
    
-    begin group	hello_world	Hello World App!									field-list
-    note	welcome_note	Welcome to my first form									
-    date	fave_past_date	What's your fave past date?									
-    end group	
-
+```text
+begin group	hello_world	Hello World App!									field-list
+note	welcome_note	Welcome to my first form									
+date	fave_past_date	What's your fave past date?									
+end group	
+```
 
 ---
 
@@ -249,7 +263,9 @@ let's put the two on one page
 
 Let's ask  them about past dates by adding this to constraints:
 
-    decimal-date-time(.) < floor(decimal-date-time(today()))
+```text
+decimal-date-time(.) < floor(decimal-date-time(today()))
+```
 
 ---
 
@@ -257,7 +273,9 @@ Let's ask  them about past dates by adding this to constraints:
 
 re-run our fave medic-conf command & reload the browser. note it's on page two of form
 
-    medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+```shell
+medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+```
 
 ---
 
@@ -265,9 +283,11 @@ re-run our fave medic-conf command & reload the browser. note it's on page two o
 
 let's only show the date if they like old dates. add this above the date row:
 
-    select_one yes_no	old_dates	Do you like old dates?
+```text
+select_one yes_no	old_dates	Do you like old dates?
+```
 
-Note values in choices tab
+Note values in "choices" tab
 
 ---
 
@@ -275,11 +295,16 @@ Note values in choices tab
 
 and now, add this to "relevant" column for the date input:
 
-    selected(${old_dates}, 'yes')
+
+```text
+sel~ected(${old_dates}, 'yes')
+```
 
 Tell the user how to fix bad data! In "constraint_message::en" field, add:
 
-    The date must be in the past.
+```text
+The date must be in the past.
+```
 
 ---
 
@@ -287,7 +312,9 @@ Tell the user how to fix bad data! In "constraint_message::en" field, add:
 
 re-run our fave medic-conf command & reload the browser. note it's on page two of form
 
-    medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+```shell
+medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+```
 
 ---
 
@@ -303,12 +330,14 @@ And then add this as the last row in your group:
 
 ## Completed form
 
-    begin group	hello_world	Hello World App!									field-list		
-    note	welcome_note	Welcome to my first form											
-    select_one yes_no	old_dates	Do you like old dates?											
-    date	fave_past_date	What's your fave past date?								selected(${old_dates}, 'yes')		decimal-date-time(.) < floor(decimal-date-time(today()))	The date must be in the past.
-    note	hundred_note	This is the date in 100 years from your date: ${hundred_years}								decimal-date-time(${fave_past_date}) < floor(decimal-date-time(today()))			
-    end group
+```text
+begin group	hello_world	Hello World App!									field-list		
+note	welcome_note	Welcome to my first form											
+select_one yes_no	old_dates	Do you like old dates?											
+date	fave_past_date	What's your fave past date?								selected(${old_dates}, 'yes')		decimal-date-time(.) < floor(decimal-date-time(today()))	The date must be in the past.
+note	hundred_note	This is the date in 100 years from your date: ${hundred_years}								decimal-date-time(${fave_past_date}) < floor(decimal-date-time(today()))			
+end group
+```
 
 ---
 
@@ -316,7 +345,9 @@ And then add this as the last row in your group:
 
 re-run our fave medic-conf command & reload the browser. note it's on page two of form
 
-    medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+```shell
+medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+```
 
 a fitting end - you do this SO. MANY. TIMES. ;)
 
