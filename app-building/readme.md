@@ -35,24 +35,25 @@ gsheets -> xlsx -> xml -> upload -> data entry & recalculating -> submit -> sync
 
 ## Prerequisites 1
 
-
+    // tested on Ubuntu 18.04
     // install couch (use )
     apt-get install couchdb=2.3.1~xenial -V
     // install node
-    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -&&sudo apt-get install nodejs
+    curl -sL https://deb.nodesource.com/setup_14.x| sudo -E bash -&&sudo apt-get install nodejs
     //Install grunt-cli
-    sudo apt-get install nodejs
+    sudo npm install -g grunt-cli
     // install xsltproc
     apt install xsltproc
     // clone cht repo and install
     git clone https://github.com/medic/cht-core&&cd cht-core&&npm ci
-    //configure couchdb: http://localhost:5988/_utils/
-    // harden couchdb
+    //configure couchdb: http://localhost:5984/_utils/
+    //set EXPORTS
+    export COUCH_NODE_NAME=couchdb@127.0.0.1&&export COUCH_URL=http://admin:pass@localhost:5984/medic
+    // harden couchdb & allow Fauxton access
+    COUCH_URL=http://admin:pass@localhost:5984/medic COUCH_NODE_NAME=couchdb@127.0.0.1 grunt secure-couchdb
     curl -X PUT "http://admin:pass@localhost:5984/_node/$COUCH_NODE_NAME/_config/httpd/WWW-Authenticate"  -d '"Basic realm=\"administrator\""' -H "Content-Type: application/json"
     // Install medic-conf
     sudo apt install python-pip&&sudo python -m pip install git+https://github.com/medic/pyxform.git@medic-conf-1.17#egg=pyxform-medic
-    //set EXPORTS
-    export COUCH_NODE_NAME=couchdb@127.0.0.1&&export COUCH_URL=http://admin:pass@localhost:5984/medic
     // start cht (3 diff terminals)
     grunt
     cd api&&node server.js
