@@ -36,7 +36,7 @@ gsheets -> xlsx -> xml -> upload -> data entry & recalculating -> submit -> sync
 ## Prerequisites 1
 
     // tested on Ubuntu 18.04
-    // install couch (use )
+    // install couch - be sure to use 2.3.x!
     apt-get install couchdb=2.3.1~xenial -V
     // install node
     curl -sL https://deb.nodesource.com/setup_14.x| sudo -E bash -&&sudo apt-get install nodejs
@@ -59,6 +59,9 @@ gsheets -> xlsx -> xml -> upload -> data entry & recalculating -> submit -> sync
     cd api&&node server.js
     cd sentinel&& node server.js
     // ensure it's up http://localhost:5988
+    //install medic-conf
+    npm install -g medic-conf
+    sudo python -m pip install git+https://github.com/medic/pyxform.git@medic-conf-1.17#egg=pyxform-medic
 
 per  [CHTS development.md](https://github.com/medic/cht-core/blob/master/DEVELOPMENT.md)
 
@@ -74,8 +77,8 @@ Clone this repo:
 
 ## set up CHT web login if needed
 
-* create a new area w/ a contact
-* create a user w/ the new contact: chw/331Medic
+* create a new Facility with a contact
+* associate your admin user the new contact
 
 ---
 
