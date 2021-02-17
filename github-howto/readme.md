@@ -18,16 +18,15 @@ A introductory guide to the concepts behind Github
 ## Github vs git
 
 * Github: web interface to git (+ special sauce)
-* git: created to track revisions in software, works on text, images etc
+* git: used to track revisions in code, works on text, images etc
 
 ---
 
 ## clone
 
 * copies a repository remote server -> your computer 
-* get a *complete* copy of *every* change, *ever*
-* normally happen  github -> your computer
-* changes made on your computer (aka in your clone) only exist locally until you `commit` and `push` them
+* is *complete* copy of *every* change, *ever*
+* changes made (aka in your clone) only exist locally until you `commit` and `push` them
 
 
 ---
@@ -35,7 +34,7 @@ A introductory guide to the concepts behind Github
 ## commit
 
 * changes are recorded to your clone when you `commit` them
-* changes are shared with others when you `push` your commits to the parent repository where you cloned from
+* changes are shared with others when you `push` your commits to from where you cloned 
 * any changes you make can be reverted at any time
 * any changes you do not `push` can not be seen by others
 
@@ -61,11 +60,18 @@ A introductory guide to the concepts behind Github
 
 ---
 
+## upstream changes
+
+* changes to master
+* changes on your branch 
+
+---
+
 ## life of a branch
 
 ![branch life](./branch.life.png)
 
-* [see github docs](https://guides.github.com/introduction/flow/)
+[see github docs](https://guides.github.com/introduction/flow/)
 
 
 ---
@@ -74,7 +80,7 @@ A introductory guide to the concepts behind Github
 
 ![branch life](./mnch.branch.png)
 
-* [see MNCH network graph](https://github.com/medic/cht-docs/network)
+[see MNCH network graph](https://github.com/medic/cht-docs/network)
 
 
 ---
