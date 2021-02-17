@@ -41,7 +41,9 @@ gsheets -> xlsx -> xml -> upload -> data entry & recalculating -> submit -> sync
 
     // tested on Ubuntu 18.04
     // install couch - be sure to use 2.3.x!
-    apt-get install couchdb=2.3.1~xenial -V
+    curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc | sudo apt-key add
+    echo "deb https://apache.bintray.com/couchdb-deb bionic main" | sudo tee -a /etc/apt/sources.list
+    apt update&&apt-get install couchdb=2.3.1~bionic -V
     // install node
     curl -sL https://deb.nodesource.com/setup_14.x| sudo -E bash -&&sudo apt-get install nodejs
     //Install grunt-cli
