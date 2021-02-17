@@ -1,18 +1,18 @@
 ---
-title: Intro Github and branching
+title: Github and git concepts
 revealOptions:
     transition: 'none'
 ---
 
-# Intro Github and branching 
-
-A introductory guide to the concepts behind Github 
+# Github and git concepts
+ 
 
 [mrjones @ github](https://github.com/mrjones-plip)
 
 [presentation source @ github](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/github-howto)
 
 ![medic logo](./medic-mobile-logo+name-white.svg)
+
 ---
 
 ## Github vs git
