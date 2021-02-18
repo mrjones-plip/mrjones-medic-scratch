@@ -299,7 +299,7 @@ and now, add this to "relevant" column for the date input:
 
 
 ```text
-sel~ected(${old_dates}, 'yes')
+selected(${old_dates}, 'yes')
 ```
 
 Tell the user how to fix bad data! In "constraint_message::en" field, add:
