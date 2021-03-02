@@ -8,9 +8,11 @@ revealOptions:
 
 A crash course for engineering folks on how to build a [CHT](https://communityhealthtoolkit.org/) app
 
-* By: [mrjones](https://github.com/mrjones-plip)
-* Source: [app-building repo](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building)
-* Made: [reveal-md](https://github.com/webpro/reveal-md)
+[mrjones](https://github.com/mrjones-plip)
+  
+[this preso on GH](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building)
+
+[![medic logo](./medic-mobile-logo+name-white.svg)](https://medicmobile.org)
 
 ---
 
@@ -367,3 +369,5 @@ a fitting end - you do this SO. MANY. TIMES. ;)
 * By: [mrjones](https://github.com/mrjones-plip)
 * Source: [app-building repo](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building)
 * Made: [reveal-md](https://github.com/webpro/reveal-md)
+
+[![medic logo](./medic-mobile-logo+name-white.svg)](https://medicmobile.org)

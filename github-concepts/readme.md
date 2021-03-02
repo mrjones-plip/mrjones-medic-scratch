@@ -11,7 +11,15 @@ revealOptions:
 
 [presentation source @ github](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/github-howto)
 
-![medic logo](./medic-mobile-logo+name-white.svg)
+[![medic logo](./medic-mobile-logo+name-white.svg)](https://medicmobile.org)
+
+---
+
+## What does this it all mean?
+
+github vs git? clone? commit? branch? PR? Outside changes?
+
+![branch life](./mnch.branch.png)
 
 ---
 
@@ -34,7 +42,7 @@ revealOptions:
 ## commit
 
 * changes are recorded to your clone when you `commit` them
-* changes are shared with others when you `push` your commits to from where you cloned 
+* shared changes by `push`ing your commits back to where you cloned from 
 * any changes you make can be reverted at any time
 * any changes you do not `push` can not be seen by others
 
@@ -91,4 +99,4 @@ revealOptions:
 * Source: [app-building repo](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/github-howto)
 * Made: [reveal-md](https://github.com/webpro/reveal-md)
 
-![medic logo](./medic-mobile-logo+name-white.svg)
+[![medic logo](./medic-mobile-logo+name-white.svg)](https://medicmobile.org)
