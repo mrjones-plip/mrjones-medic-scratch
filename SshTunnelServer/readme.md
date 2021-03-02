@@ -1,4 +1,3 @@
-
 # SSH Tunnel Server Installer
  
 ## Intro
@@ -11,6 +10,8 @@ The script will:
 1. Create an Apache vhost for this login, with the `GH-USERNAME.domain.com`
 1. Create an SSL certificate with Let's Encrypt for `GH-USERNAME.domain.com`
 1. Put instructions to use the SSH tunnels at `domain.com`
+
+This script is [hosted on GitHub](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/SshTunnelServer).
 
 ## Requirements
 
@@ -28,5 +29,5 @@ Development was done locally and then in Digital Ocean.
 1. SSH as root to your Ubuntu server with public IP
 1. clone this repo with `git clone https://github.com/mrjones-plip/mrjones-medic-scratch`
 1. cd into repo and add create `user.txt` with your github users, one per line
-1. run the install script with `./installTunnelServer.sh DOMAIN.COM` replacing `DOMAIN.COM` with your real domain from step 3 in Requirements.
+1. run the install script with `./installTunnelServer.sh DOMAIN.COM EMAIL` replacing `DOMAIN.COM` with your real domain from step 3 in Requirements and replacing `EMAIL` with your email which will be used to agree to Let's Encrypt TOS and to get notifications about expiring certs.
 1. Send users the URL `DOMAIN.COM` which now lists how to use the server
