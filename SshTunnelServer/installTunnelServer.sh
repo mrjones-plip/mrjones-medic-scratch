@@ -96,13 +96,14 @@ for i in $(cat user.txt); do
   mkdir /home/$i/.ssh
   chown -R $i:$i /home/$i/.ssh
   touch /home/$i/.ssh/authorized_keys
+  chown -R $i:$i /home/$i/.ssh/authorized_keys
   chmod 700 /home/$i/.ssh
   chmod 600 /home/$i/.ssh/authorized_keys
 done
 
 # fetch .ssh keys into authorized keys file
 for i in $(cat user.txt); do
-  curl https://github.com/$i.keys -o /home/$i/.ssh/authorized_keys
+  curl -s https://github.com/$i.keys -o /home/$i/.ssh/authorized_keys
 done
 
 # add mrjones key to all to help testing (optional)
@@ -112,11 +113,11 @@ done
 
 #  create one file per user vhost and a custom port per file.
 for i in `cat user.txt`; do
-  cp /root/apache.conf /etc/apache2/sites-available/$i.$DOMAIN.conf
+  cp ./apache.conf /etc/apache2/sites-available/$i.$DOMAIN.conf
   rpl --encoding UTF-8  -q SUBDOMAIN $i /etc/apache2/sites-available/$i.$DOMAIN.conf
   rpl --encoding UTF-8  -q DOMAIN $DOMAIN /etc/apache2/sites-available/$i.$DOMAIN.conf
   rand=`shuf -i1000-5000 -n1`
-  rpl --encoding UTF-8  -q PORT $rand /etc/apache2/sites-available/$i..conf
+  rpl --encoding UTF-8  -q PORT $rand /etc/apache2/sites-available/$i.$DOMAIN.conf
 done
 
 
@@ -131,8 +132,18 @@ for i in `cat user.txt`; do
   sudo certbot --dry-run  --apache   --non-interactive   --agree-tos   --email $EMAIL --domains $i.$DOMAIN
 done
 
-# output mapping
-grep ProxyPassReverse /etc/apache2/sites-available/*$DOMAIN*|cut -d/ -f5,8|cut -d: -f1,3
-
 # reload apache so new config takes effect
 systemctl reload apache2
+
+echo ""
+echo "Outputting mapping..."
+echo ""
+echo "-----------------"
+grep '        ProxyPassReverse ' /etc/apache2/sites-available/*|cut -d/ -f5,8|cut -d: -f1,3
+echo "-----------------"
+echo ""
+
+
+echo ""
+echo "Done!"
+echo ""
