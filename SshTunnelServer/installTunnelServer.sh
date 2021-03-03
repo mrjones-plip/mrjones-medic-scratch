@@ -94,9 +94,9 @@ sudo chmod +x /etc/update-motd.d/02-ssh-tunnel-info
 # todo validate this works
 for i in $(cat user.txt); do
   mkdir /home/$i/.ssh
-  chown -R $i:$i /home/$i/.ssh
   touch /home/$i/.ssh/authorized_keys
-  chown -R $i:$i /home/$i/.ssh/authorized_keys
+  chown $i:$i /home/$i/.ssh
+  chown $i:$i /home/$i/.ssh/authorized_keys
   chmod 700 /home/$i/.ssh
   chmod 600 /home/$i/.ssh/authorized_keys
 done
@@ -128,8 +128,7 @@ done
 
 #enable certbot certs , change email
 for i in `cat user.txt`; do
-  # todo - remove --dry-run so this actually works
-  sudo certbot --dry-run  --apache   --non-interactive   --agree-tos   --email $EMAIL --domains $i.$DOMAIN
+  sudo certbot  --apache   --non-interactive   --agree-tos   --email $EMAIL --domains $i.$DOMAIN
 done
 
 # reload apache so new config takes effect
