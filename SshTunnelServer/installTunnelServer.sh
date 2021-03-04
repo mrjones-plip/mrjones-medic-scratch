@@ -67,9 +67,9 @@ read -n1 -s
 # install apache, rpl & certbot then enable mods
 # todo - uncomment this - this way to speed testing
 echo ""
-echo "Installing required software..."
+echo "Updating OS and installing required software, this might take a while..."
 echo ""
-apt -q update&&apt -y -q dist-upgrade&&apt -q install -y  apache2  rpl&&systemctl --now enable apache2
+apt -qq update&&apt -y -qqq dist-upgrade&&apt -qqq install -y  apache2  rpl&&systemctl --now enable apache2
 sudo snap install core; sudo snap refresh core
 sudo snap install --classic certbot
 a2enmod proxy proxy_ajp proxy_http rewrite deflate headers proxy_balancer proxy_connect proxy_html
@@ -131,6 +131,9 @@ for i in `cat user.txt`; do
   sudo certbot  --apache   --non-interactive   --agree-tos   --email $EMAIL --domains $i.$DOMAIN
 done
 
+
+sudo certbot  --apache   --non-interactive   --agree-tos   --email $EMAIL --domains $DOMAIN
+
 # reload apache so new config takes effect
 systemctl reload apache2
 
@@ -138,7 +141,7 @@ echo ""
 echo "Outputting mapping..."
 echo ""
 echo "-----------------"
-grep '        ProxyPassReverse ' /etc/apache2/sites-available/*|cut -d/ -f5,8|cut -d: -f1,3
+grep -ri -m1 'ProxyPassReverse' /etc/apache2/sites-available/*|cut -d/ -f5,8|cut -d: -f1,3|awk 'BEGIN{FS=OFS=":"}{print $2 FS  $1}'|sed -r 's/.conf//g'|sed -r 's/:/\t/g'
 echo "-----------------"
 echo ""
 
