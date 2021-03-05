@@ -106,3 +106,17 @@ And then in a browser they could go to `https://alligator-lovely-ssl.tunnel.doma
   
   **A:** Edit the `user.txt` file to only have the one user.  They will lose their original port mapping and get a new one.
 
+
+* **Q:** How do I get a list of all the users in my GH org?
+  
+  **A:** Get a [personal GH token](https://github.com/settings/tokens), then call the [list org members API](https://docs.github.com/en/rest/reference/orgs#list-organization-members) with this call `curl -H "Authorization: token  TOKEN" https://api.github.com/orgs/ORG/members`. Be sure to replace `TOKEN` and `ORG` with your token and your org.
+
+
+* **Q:** Is there a rate limit to the number of Let's Encrypt certs I can request?
+  
+  **A:** Yes! It's [50/week](https://letsencrypt.org/docs/rate-limits/).  This script should really be using Subject Alternative Name (SAN) mechanism...hopefully soon!
+  
+
+* **Q:** I added a GH user, but it doesn't create an account for them, why not?
+  
+  **A:** All users must have an SSH key on GH.  Check `https://github.com/USERNAME.keys` and ensure a key is listed there. Re-run the script if need be after a key has been added by the user.

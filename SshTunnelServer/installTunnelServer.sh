@@ -48,10 +48,21 @@ if [ "$EUID" -ne 0 ]; then
   echo ""
   echo "Exiting"
   echo ""
-  exit
+#  exit
 fi
 
 echo ""
+echo " ------ Verifying users who have SSH keys on GH, this may take a while... ------ "
+echo " "
+VALID_USERS=()
+for USER in $(cat user.txt); do
+  keys=$(curl -s /dev/stdout https://github.com/${USER}.keys)
+  if [[ ! -z "$keys" ]]; then
+    VALID_USERS+=("$USER")
+    sleep 0.05
+  fi
+done
+
 echo "This script assumes:"
 echo " "
 echo " - you're root on Ubuntu"
@@ -64,7 +75,7 @@ echo ""
 echo "Will create accounts for these GitHub users using their"
 echo "SSH keys on GitHub:"
 echo ""
-for i in $(cat user.txt); do
+for i in "${VALID_USERS[@]}"; do
   echo " - $i"
 done
 echo ""
@@ -89,7 +100,8 @@ echo ""
 echo " ------ Adding users... ------ "
 echo ""
 cp ./press_to_exit.sh /bin/press_to_exit.sh
-for i in $(cat user.txt); do
+sleep 1
+for i in "${VALID_USERS[@]}"; do
   useradd -m -d /home/$i -s /bin/press_to_exit.sh $i
 done
 
@@ -103,7 +115,7 @@ sudo chmod +x /etc/update-motd.d/02-ssh-tunnel-info
 echo ""
 echo " ------ Adding SSH keys for users and setting file perms... ------ "
 echo ""
-for i in $(cat user.txt); do
+for i in "${VALID_USERS[@]}"; do
   mkdir /home/$i/.ssh
   touch /home/$i/.ssh/authorized_keys
   chown $i:$i /home/$i/.ssh
@@ -116,7 +128,7 @@ done
 echo ""
 echo "Adding apache vhost files..."
 echo ""
-for i in `cat user.txt`; do
+for i in "${VALID_USERS[@]}"; do
   rand=`shuf -i1000-5000 -n1`
   FQDNconf="${i}.${DOMAIN}.conf"
   FQDN_ssl_conf="${i}-ssl.${DOMAIN}.conf"
@@ -124,14 +136,14 @@ for i in `cat user.txt`; do
   cp ./apache.conf /etc/apache2/sites-available/$FQDNconf
   cp ./apache.ssl.conf /etc/apache2/sites-available/$FQDN_ssl_conf
 
-  rpl --encoding UTF-8  -q SUBDOMAIN $i /etc/apache2/sites-available/$FQDNconf
-  rpl --encoding UTF-8  -q SUBDOMAIN $i /etc/apache2/sites-available/$FQDN_ssl_conf
+  rpl -q --encoding UTF-8  -q SUBDOMAIN $i /etc/apache2/sites-available/$FQDNconf
+  rpl -q  --encoding UTF-8  -q SUBDOMAIN $i /etc/apache2/sites-available/$FQDN_ssl_conf
 
-  rpl --encoding UTF-8  -q DOMAIN $DOMAIN /etc/apache2/sites-available/$FQDNconf
-  rpl --encoding UTF-8  -q DOMAIN $DOMAIN /etc/apache2/sites-available/$FQDN_ssl_conf
+  rpl  -q --encoding UTF-8  -q DOMAIN $DOMAIN /etc/apache2/sites-available/$FQDNconf
+  rpl  -q --encoding UTF-8  -q DOMAIN $DOMAIN /etc/apache2/sites-available/$FQDN_ssl_conf
 
-  rpl --encoding UTF-8  -q PORT $rand /etc/apache2/sites-available/$FQDNconf
-  rpl --encoding UTF-8  -q PORT $rand /etc/apache2/sites-available/$FQDN_ssl_conf
+  rpl  -q --encoding UTF-8  -q PORT $rand /etc/apache2/sites-available/$FQDNconf
+  rpl  -q --encoding UTF-8  -q PORT $rand /etc/apache2/sites-available/$FQDN_ssl_conf
 
   a2ensite $FQDNconf $FQDN_ssl_conf
 done
@@ -139,14 +151,13 @@ done
 echo ""
 echo " ------ Fetching certs from Let's Encrypt... ------ "
 echo ""
-for i in `cat user.txt`; do
+for i in "${VALID_USERS[@]}"; do
   sudo certbot  --apache   --non-interactive   --agree-tos   --email $EMAIL --domains $i.$DOMAIN
 done
 
 echo ""
 echo " ------ Creating last cert for bare $DOMAIN domain... ------ "
 echo ""
-
 sudo certbot  --apache   --non-interactive   --agree-tos   --email $EMAIL --domains $DOMAIN
 
 echo ""
