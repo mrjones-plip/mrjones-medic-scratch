@@ -1,10 +1,9 @@
 #!/bin/bash
 
 # todo - check for Nth run to not create users that already exist etc
-# todo - save decent looking HTML instructions in $DOMAIN vhost
 # todo - maybe check for ubuntu?
-# todo - consolidate certbot calls with "-d DOMAIN" to reduce API calls?
-# todo - check for GH user exists (http 200) and user having keys before creating account
+# todo - consolidate certbot calls with "-d DOMAIN" via SAN to reduce API calls?
+# todo - cache SSH keys on first validation to avoid subsequent API calls to GH to get keys again
 
 DOMAIN="$1"
 EMAIL="$2"
@@ -59,10 +58,12 @@ for USER in $(cat user.txt); do
   keys=$(curl -s /dev/stdout https://github.com/${USER}.keys)
   if [[ ! -z "$keys" ]]; then
     VALID_USERS+=("$USER")
-    sleep 0.05
+  else
+    echo " - Skipping $USER, no SSH key found"
   fi
 done
 
+echo " "
 echo "This script assumes:"
 echo " "
 echo " - you're root on Ubuntu"
@@ -113,10 +114,10 @@ cp motd /etc/update-motd.d/02-ssh-tunnel-info
 sudo chmod +x /etc/update-motd.d/02-ssh-tunnel-info
 
 echo ""
-echo " ------ Adding SSH keys for users and setting file perms... ------ "
+echo " ------ Adding SSH keys for users and setting file perms. This may take a while... ------ "
 echo ""
 for i in "${VALID_USERS[@]}"; do
-  mkdir /home/$i/.ssh
+  mkdir -p /home/$i/.ssh
   touch /home/$i/.ssh/authorized_keys
   chown $i:$i /home/$i/.ssh
   chown $i:$i /home/$i/.ssh/authorized_keys
