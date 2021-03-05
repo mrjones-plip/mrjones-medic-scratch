@@ -104,5 +104,5 @@ And then in a browser they could go to `https://alligator-lovely-ssl.tunnel.doma
 
 * **Q:** A user changed their SSH key on GitHub - how do I update their account?
   
-  **A:** Edit the `user.txt` file to only have the one user.  They will lose their port mapping.
+  **A:** Edit the `user.txt` file to only have the one user.  They will lose their original port mapping and get a new one.
 
