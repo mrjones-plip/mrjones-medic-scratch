@@ -77,14 +77,14 @@ And then in a browser they could go to `https://alligator-lovely-ssl.tunnel.doma
   **A:** It started as "just a quick bash script" and then spiraled out of control from there.  Sorry!
   
 
-* **Q:** I'm getting 400 errors in Apache `The plain http request was sent to https port`
+* **Q:** How come I'm getting 400 errors in Apache `The plain http request was sent to https port`?
   
   **A:** A user has created an SSH tunnel using the non-ssl vhost in the top group of port/URL sets which points to a web server running SSL on localhost.  Have them use the `-ssl` vhost listed in the bottom group of port/URL sets.  The reason is that the Apache vhost has a hard coded proxy of either `ProxyPass / http://localhost:PORT/` or `ProxyPass / https://localhost:PORT/`, it can't be both.  
   
 
 * **Q:** Why not use [ngrok](https://ngrok.com/), [pagekite](https://pagekite.net/), [localtunnel](https://github.com/localtunnel/localtunnel) or InsertSolutionHere instead?
   
-  **A:** You totally can!  These are much more full featured and are much easier to use. [localtunnel](https://github.com/localtunnel/localtunnel)  may be of particular interest as it has a self hosted option.  Conversely, they cost more money at a certain scale, which you may be willing to trade for a more DIY approach. As well, this solution offers authentication in the way of SSH keys and easy user provisioning because the accounts are tied to GitHub.
+  **A:** You totally can!  These are much more full featured and are much easier to use. [localtunnel](https://github.com/localtunnel/localtunnel)  may be of particular interest as it has a self hosted option.  Conversely, they cost more money this this script.  It's estimated a $5/mo VPS could support dozzens of users. This solution also offers authentication in the way of SSH keys. Finally, this script makes it trivially easy to provision users because the accounts are tied to GitHub.
   
 
 * **Q:** Does this work with self-signed certs on localhost?
@@ -97,9 +97,9 @@ And then in a browser they could go to `https://alligator-lovely-ssl.tunnel.doma
   **A:** If the user is named `alligator-lovely`, open `/home/alligator-lovely/.ssh/authorized_kes` and add your public SSH key on a new line.  This way you can SSH in to remove any doubt that the server is working correctly.
   
 
-* **Q:** I need to add more users after setting this up a first time? Can I re-run the script?
+* **Q:** I need to add more users after setting this up a first time - can I re-run the script?
   
-  **A:** The script is safe to re-run multiple times. Edit the `user.txt` file to only have the new users.
+  **A:** Yes, the script is safe to re-run multiple times. Edit the `user.txt` file to only have the new users.
   
 
 * **Q:** A user changed their SSH key on GitHub - how do I update their account?
@@ -109,7 +109,7 @@ And then in a browser they could go to `https://alligator-lovely-ssl.tunnel.doma
 
 * **Q:** How do I get a list of all the users in my GH org?
   
-  **A:** Get a [personal GH token](https://github.com/settings/tokens), then call the [list org members API](https://docs.github.com/en/rest/reference/orgs#list-organization-members) with this call `curl -H "Authorization: token  TOKEN" https://api.github.com/orgs/ORG/members`. Be sure to replace `TOKEN` and `ORG` with your token and your org.
+  **A:** Get a [personal GH token](https://github.com/settings/tokens), then call the [list org members API](https://docs.github.com/en/rest/reference/orgs#list-organization-members) with this call `curl -H "Authorization: token  TOKEN" https://api.github.com/orgs/ORG/members`. Be sure to replace `TOKEN` and `ORG` with your token and your org. There's rate limits, but [at 5000/hr](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting), they probably don't apply.
 
 
 * **Q:** Is there a rate limit to the number of Let's Encrypt certs I can request?
