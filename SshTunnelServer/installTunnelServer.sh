@@ -44,7 +44,7 @@ fi
 
 # thanks https://stackoverflow.com/a/18216122
 if [ "$EUID" -ne 0 ]; then
-  echo "ERROR - You are not as root"
+  echo "ERROR - You are not root"
   echo ""
   echo "Exiting"
   echo ""
@@ -55,10 +55,11 @@ echo ""
 echo "This script assumes:"
 echo " "
 echo " - you're root on Ubuntu"
-echo " - you have a wildcard DNS entry pointed to this server for *.$DOMAIN"
-echo " - you want to set up a bunch of SSH tunnels to reverse proxy HTTPs "
-echo "   and HTTP traffic"
-echo " - are on on a machine dedicated to this purpose."
+echo " - you have a wildcard DNS entry pointed to this server "
+echo "   for *.$DOMAIN"
+echo " - you want to set up a bunch of SSH tunnels to reverse  "
+echo "   proxy HTTPs and HTTP traffic"
+echo " - are on on a machine dedicated to this purpose"
 echo ""
 echo "Will create accounts for these GitHub users using their"
 echo "SSH keys on GitHub:"
@@ -75,15 +76,15 @@ echo ""
 read -n1 -s
 
 # install apache, rpl & certbot then enable mods
-# todo - uncomment this - this way to speed testing
 echo ""
 echo " ------ Updating OS and installing required software, this might take a while... ------ "
 echo ""
 apt -qq update&&apt -y -qqq dist-upgrade&&apt -qqq install -y  apache2  rpl&&systemctl --now enable apache2
 sudo snap install core; sudo snap refresh core
 sudo snap install --classic certbot
+mv /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/000-default-ssl.conf
+a2ensite 000-default-ssl.conf
 
-# todo validate this works
 echo ""
 echo " ------ Adding users... ------ "
 echo ""
@@ -117,22 +118,22 @@ echo "Adding apache vhost files..."
 echo ""
 for i in `cat user.txt`; do
   rand=`shuf -i1000-5000 -n1`
-  FQDNconf="{$i}.{$DOMAIN}.conf"
-  FQDN-ssl-conf="{$i}-ssl.{$DOMAIN}.conf"
+  FQDNconf="${i}.${DOMAIN}.conf"
+  FQDN_ssl_conf="${i}-ssl.${DOMAIN}.conf"
 
   cp ./apache.conf /etc/apache2/sites-available/$FQDNconf
-  cp ./apache.ssl.conf /etc/apache2/sites-available/$FQDN-ssl-conf
+  cp ./apache.ssl.conf /etc/apache2/sites-available/$FQDN_ssl_conf
 
   rpl --encoding UTF-8  -q SUBDOMAIN $i /etc/apache2/sites-available/$FQDNconf
-  rpl --encoding UTF-8  -q SUBDOMAIN $i /etc/apache2/sites-available/$FQDN-ssl-conf
+  rpl --encoding UTF-8  -q SUBDOMAIN $i /etc/apache2/sites-available/$FQDN_ssl_conf
 
   rpl --encoding UTF-8  -q DOMAIN $DOMAIN /etc/apache2/sites-available/$FQDNconf
-  rpl --encoding UTF-8  -q DOMAIN $DOMAIN /etc/apache2/sites-available/$FQDN-ssl-conf
+  rpl --encoding UTF-8  -q DOMAIN $DOMAIN /etc/apache2/sites-available/$FQDN_ssl_conf
 
   rpl --encoding UTF-8  -q PORT $rand /etc/apache2/sites-available/$FQDNconf
-  rpl --encoding UTF-8  -q PORT $rand /etc/apache2/sites-available/$FQDN-ssl-conf
+  rpl --encoding UTF-8  -q PORT $rand /etc/apache2/sites-available/$FQDN_ssl_conf
 
-  a2ensite $FQDNconf $FQDN-ssl-conf
+  a2ensite $FQDNconf $FQDN_ssl_conf
 done
 
 echo ""
@@ -151,10 +152,10 @@ sudo certbot  --apache   --non-interactive   --agree-tos   --email $EMAIL --doma
 echo ""
 echo " ------ Configuring and Reloading apache... ------ "
 echo ""
-a2enmod proxy proxy_ajp proxy_http rewrite deflate headers proxy_balancer proxy_connect proxy_html
+a2enmod proxy proxy_ajp proxy_http rewrite deflate headers proxy_balancer proxy_connect proxy_html ssl
 systemctl reload apache2
-MAPPING_NOSSL=$(grep -ri -m1 'ProxyPassReverse' /etc/apache2/sites-available/*|grep -v '\-ssl\.'|cut -d/ -f5,8|cut -d: -f1,3|awk 'BEGIN{FS=OFS=":"}{print $2 FS  $1}'|sed -r 's/.conf//g'|sed -r 's/:/\t/g')
-MAPPING_SSL=$(grep -ri -m1 'ProxyPassReverse' /etc/apache2/sites-available/*-ssl\.*|cut -d/ -f5,8|cut -d: -f1,3|awk 'BEGIN{FS=OFS=":"}{print $2 FS  $1}'|sed -r 's/.conf//g'|sed -r 's/:/\t/g')
+MAPPING_NOSSL=$(grep -ri -m1 'ProxyPassReverse' /etc/apache2/sites-available/*|grep -v '\-ssl\.'|cut -d/ -f5,8|cut -d: -f1,3|awk 'BEGIN{FS=OFS=":"}{print $2 FS  $1}'|sed -r 's/.conf//g'|sed -r 's/:/\t/g'| awk '{print "\t" $0}')
+MAPPING_SSL=$(grep -ri -m1 'ProxyPassReverse' /etc/apache2/sites-available/*-ssl\.*|cut -d/ -f5,8|cut -d: -f1,3|awk 'BEGIN{FS=OFS=":"}{print $2 FS  $1}'|sed -r 's/.conf//g'|sed -r 's/:/\t/g'| awk '{print "\t" $0}')
 SAMPLE_PORT=$(grep -ri -m1 'ProxyPassReverse' /etc/apache2/sites-available/*|cut -d/ -f5,8|cut -d: -f3|tail -n1)
 SAMPLE_HOST=$(grep -ri -m1 'ProxyPassReverse' /etc/apache2/sites-available/*|cut -d/ -f5,8|cut -d: -f1|sed 's/.conf//g'|tail -n1)
 SAMPLE_LOGIN=$(grep -ri -m1 'ProxyPassReverse' /etc/apache2/sites-available/*|cut -d/ -f5,8|cut -d: -f1|sed 's/.conf//g'|tail -n1|cut -d. -f1)
@@ -177,38 +178,39 @@ $MAPPING_SSL
 
 use:
 
-     ssh -T -R PORT-FROM-ABOVE:127.0.0.1:PORT-ON-DEV GH-HANDLE@{$DOMAIN}
+    ssh -T -R PORT-FROM-ABOVE:127.0.0.1:PORT-ON-DEV GH-HANDLE@${DOMAIN}
 
-example - expose your local port 80 on https://{$SAMPLE_HOST} using
-{$SAMPLE_LOGIN}'s GH keys:
+example:
 
-     ssh -T -R {$SAMPLE_PORT}:127.0.0.1:80 {$SAMPLE_LOGIN}@{$DOMAIN}
+    expose local port 80 on https://${SAMPLE_HOST} using ${SAMPLE_LOGIN}'s GH keys
 
-note on  <code>http</code> vs <code>https</code> ports above:
+    ssh -T -R ${SAMPLE_PORT}:127.0.0.1:80 ${SAMPLE_LOGIN}@${DOMAIN}
 
-     Apache is configured on the <code>http</code> hosts to speak
-     <code>http</code> to your localhost server. Conversely, it is configured to speak
-     <code>https</code> on the <code>https</code> hosts. If you mix these up
-     it will try and speak <code>https</code> to <code>http</code> (or vise
-     versa) and it will fail.
+note:
 
-more info:
+    Apache is configured on the http hosts to speak http to your localhost
+    server. Conversely, it is configured to speak https on the https hosts.
+    If you mix these up it will try and speak https to http (or vise versa)
+    and it will fail.
 
-     https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/SshTunnelServer
+more:
+
+    https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/SshTunnelServer
 </pre>
 " > /var/www/html/index.html
 
 echo ""
 echo " ------ Here's the final mapping for http: ------ "
 echo ""
-echo $MAPPING_NOSSL
+echo "${MAPPING_NOSSL}"
 echo ""
 echo " ------ Here's the final mapping for https: ------ "
 echo ""
-echo $MAPPING_SSL
-
-
+echo "${MAPPING_SSL}"
 
 echo ""
+echo "All this was saved to /var/www/html/index.html which is found on https://${DOMAIN}"
+echo ""
+
 echo " ------ All done - enjoy! ------ "
 echo ""
