@@ -41,47 +41,37 @@ gsheets -> xlsx -> xml -> upload -> data entry & recalculating -> submit -> sync
 
 ## Prerequisites 1
 
-    // tested on Ubuntu 18.04
-    // install couch - be sure to use 2.3.x!
-    curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc | sudo apt-key add
-    echo "deb https://apache.bintray.com/couchdb-deb bionic main" | sudo tee -a /etc/apt/sources.list
-    apt update&&apt-get install couchdb=2.3.1~bionic -V
-    // install node
-    curl -sL https://deb.nodesource.com/setup_14.x| sudo -E bash -&&sudo apt-get install nodejs
-    //Install grunt-cli
-    sudo npm install -g grunt-cli
-    // install xsltproc
-    apt install xsltproc
-    // clone cht repo and install
-    git clone https://github.com/medic/cht-core&&cd cht-core&&npm ci
-    //configure couchdb: http://localhost:5984/_utils/
-    //set EXPORTS
-    export COUCH_NODE_NAME=couchdb@127.0.0.1&&export COUCH_URL=http://admin:pass@localhost:5984/medic
-    // harden couchdb & allow Fauxton access
-    COUCH_URL=http://admin:pass@localhost:5984/medic COUCH_NODE_NAME=couchdb@127.0.0.1 grunt secure-couchdb
-    curl -X PUT "http://admin:pass@localhost:5984/_node/$COUCH_NODE_NAME/_config/httpd/WWW-Authenticate"  -d '"Basic realm=\"administrator\""' -H "Content-Type: application/json"
-    // Install medic-conf
-    sudo apt install python-pip&&sudo python -m pip install git+https://github.com/medic/pyxform.git@medic-conf-1.17#egg=pyxform-medic
-    // start cht (3 diff terminals)
-    grunt
-    cd api&&node server.js
-    cd sentinel&& node server.js
-    // ensure it's up http://localhost:5988
-    //install medic-conf
-    npm install -g medic-conf
-    sudo python -m pip install git+https://github.com/medic/pyxform.git@medic-conf-1.17#egg=pyxform-medic
+[CHT Core development environment](https://github.com/medic/cht-core/blob/master/DEVELOPMENT.md) 
+ 
+OR
 
-per  [CHTS development.md](https://github.com/medic/cht-core/blob/master/DEVELOPMENT.md)
+[CHT Docker Compose Helper](https://github.com/medic/cht-core/blob/master/scripts/docker-helper)
 
 ---
 
 ## Prerequisites 2
 
-Clone this repo:
+Clone CHT Core & this preso's repos:
 
 ```shell
 git clone https://github.com/mrjones-plip/mrjones-medic-scratch.git
+git clone https://github.com/medic/cht-core
 ```
+
+* Core: default config as template
+* This repo: copying/pasting snippets
+
+---
+## Prerequisites 3
+
+`cht-conf` (formerly `medic-conf`)
+
+```shell
+npm install -g cht-conf
+sudo python -m pip install git+https://github.com/medic/pyxform.git@medic-conf-1.17#egg=pyxform-medic
+```
+
+See [GH Site](https://github.com/medic/cht-conf)
 
 ---
 
@@ -125,15 +115,15 @@ Replace your ID from prior step
 
 ---
 
-## medic-conf first run
+## `cht-conf` first run
 
 test export to local file:
 
 ```shell
-medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive 
+cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive 
 ```
 
-note that medic-conf allows you to string together multiple commands
+note that `cht-conf` allows you to string together multiple commands
 
 ---
 
@@ -142,7 +132,7 @@ note that medic-conf allows you to string together multiple commands
 Let's import our new one by adding convert-app-forms (xlsx -> xml) and upload-app-forms (xml -> CHT):
 
 ```shell
-medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive convert-app-forms upload-app-forms -- test_form
+cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive convert-app-forms upload-app-forms -- test_form
 ```
 
 see if it's there!
@@ -168,12 +158,12 @@ Before we start form building, let's set some properties via the `forms/app/test
 
 ---
 
-## Go faster medic-conf
+## Go faster `cht-conf`
 
-Add `upload-resources` to the `medic-conf` to send the json as well:
+Add `upload-resources` to the `cht` to send the json as well:
 
 ```shell
-medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
 ```
 
 ---
@@ -212,10 +202,10 @@ note	register_note	Welcome to my first form
 
 ## Rinse and repeat
 
-re-run our fave medic-conf command (you could trim off "upload-resources")
+re-run our fave cht command (you could trim off "upload-resources")
 
 ```shell
-medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
 ```
 
 ---
@@ -243,10 +233,10 @@ date	fave_past_date	What's your fave past date?
 
 ## Rinse and repeat & reload reload reload 
 
-re-run our fave medic-conf command & reload the browser. note it's on page two of form
+re-run our fave cht command & reload the browser. note it's on page two of form
 
 ```shell
-medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
 ```
 ---
 
@@ -275,10 +265,10 @@ decimal-date-time(.) < floor(decimal-date-time(today()))
 
 ## Rinse and repeat & reload reload reload
 
-re-run our fave medic-conf command & reload the browser. note it's on page two of form
+re-run our fave cht command & reload the browser. note it's on page two of form
 
 ```shell
-medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
 ```
 
 ---
@@ -314,10 +304,10 @@ The date must be in the past.
 
 ## Rinse and repeat & reload reload reload
 
-re-run our fave medic-conf command & reload the browser. note it's on page two of form
+re-run our fave cht command & reload the browser. note it's on page two of form
 
 ```shell
-medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
 ```
 
 ---
@@ -347,10 +337,10 @@ end group
 
 ## Rinse and repeat & reload reload reload 
 
-re-run our fave medic-conf command & reload the browser. note it's on page two of form
+re-run our fave cht command & reload the browser. note it's on page two of form
 
 ```shell
-medic-conf --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
 ```
 
 a fitting end - you do this SO. MANY. TIMES. ;)
