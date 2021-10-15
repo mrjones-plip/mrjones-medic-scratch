@@ -1,0 +1,57 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+
+  <!-- thanks https://codepo8.github.io/css-fork-on-github-ribbon/ ! -->
+  <span id="forkongithub" class="hidden-print ">
+      <a href="https://github.com/mrjones-plip/offline-boggle-boards">I'm on GitHub</a>
+  </span>
+
+  <h1>Burpees for Nick</h1>
+
+  <p>
+    <input id="minutes" type="number" step="1" pattern="\d+"  min="1" max="120" size="5" value="20"/> Minutes
+    <input id="newGame" type="submit" value="Start">
+    <input id="stopGame" type="submit" value="Stop">
+  </p>
+
+  <div>
+    <h2>
+      Minute
+      <span id="current_minute">0</span> of
+      <span id="total_minutes">0</span><br />
+      <progress value="60" max="60" id="timer"></progress>
+    </h2>
+  </div>
+
+  <div><h2><span id="burpees">0</span></h2></div>
+
+
+  <script src="js/vendor/modernizr-3.11.2.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/jquery-3.6.0.min.js"></script>
+  <script src="js/NoSleep.min.js"></script>
+  <script src="js/main.js"></script>
+  <!--  Uncomment in dev-->
+    <script src="js/live.js"></script>
+
+</body>
+</html>
