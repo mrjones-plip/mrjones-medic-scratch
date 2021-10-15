@@ -10,7 +10,10 @@ Thanks Nick!
 
 ## Running
 
-Open `index.html` in your favorite browser, choose minutes and click "Start"!
+1. Clone this repo: `git clone https://github.com/mrjones-plip/mrjones-medic-scratch`
+2. Open `index.html` in your favorite browser
+3. Choose minutes and click "Start"
+4. Do lots of burpees
 
 ## Todo
 
