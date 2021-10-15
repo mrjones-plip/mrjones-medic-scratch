@@ -18,6 +18,7 @@ let current_minute;
  * Burp!
  */
 async function burp(){
+  $("#newGame").prop("disabled",true);
 
   let end_beeps = 15;
 
@@ -49,6 +50,7 @@ async function burp(){
     await sleep((150));
     end_beeps--;
   }
+  $("#newGame").prop("disabled",false);
 
 }
 

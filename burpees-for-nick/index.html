@@ -20,35 +20,36 @@
 
 <body>
 
+  <!-- yes, I'm using center.  yes it was deprecated in ~2010. -->
   <center>
-  <!-- thanks https://codepo8.github.io/css-fork-on-github-ribbon/ ! -->
-  <span id="forkongithub" class="hidden-print ">
-      <a href="https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/burpees-for-nick">I'm on GitHub</a>
-  </span>
+      <!-- thanks https://codepo8.github.io/css-fork-on-github-ribbon/ ! -->
+      <span id="forkongithub" class="hidden-print ">
+          <a href="https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/burpees-for-nick">I'm on GitHub</a>
+      </span>
 
-  <h1>
-    <img src="./nick.jpeg" id="nick_pic">
-    Nick Says Do This Many Burpees!
-  </h1>
+      <h1>
+        <img src="./nick.jpeg" id="nick_pic">
+        Nick Says Do This Many Burpees!
+      </h1>
 
-  <div>
-    <span id="burpees">0</span>
-  </div>
+      <div>
+        <span id="burpees">0</span>
+      </div>
 
-  <div id="progress_outer">
-    <h2>
-      Minute
-      <span id="current_minute">0</span> of
-      <span id="total_minutes">0</span><br />
-      <progress value="60" max="60" id="timer"></progress>
-    </h2>
-  </div>
+      <div id="progress_outer">
+        <h2>
+          Minute
+          <span id="current_minute">0</span> of
+          <span id="total_minutes">0</span><br />
+          <progress value="60" max="60" id="timer"></progress>
+        </h2>
+      </div>
 
-  <div id="controls">
-    <input id="minutes" type="number" step="1" pattern="\d+"  min="1" max="120" size="3" value="20"/> Minutes
-    <input id="newGame" type="submit" value="Start">
-    <input id="stopGame" type="submit" value="Stop">
-  </div>
+      <div id="controls">
+        <input id="minutes" type="number" step="1" pattern="\d+"  min="1" max="120" size="3" value="20"/> Minutes
+        <input id="newGame" type="submit" value="Start">
+        <input id="stopGame" type="submit" value="Stop">
+      </div>
   </center>
 
   <script src="js/vendor/modernizr-3.11.2.min.js"></script>
