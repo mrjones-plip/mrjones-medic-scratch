@@ -7,7 +7,7 @@ const noSleep = new NoSleep();
 
 // yes, a min is always 60 seconds, but this makes it hella easier
 // to debug when a min is a lot less than 60 seconds ;)
-const min = 1;
+const min = 60;
 
 let minutes;
 let burpees;
