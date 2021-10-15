@@ -20,20 +20,22 @@
 
 <body>
 
+  <center>
   <!-- thanks https://codepo8.github.io/css-fork-on-github-ribbon/ ! -->
   <span id="forkongithub" class="hidden-print ">
       <a href="https://github.com/mrjones-plip/offline-boggle-boards">I'm on GitHub</a>
   </span>
 
-  <h1>Burpees for Nick</h1>
-
-  <p>
-    <input id="minutes" type="number" step="1" pattern="\d+"  min="1" max="120" size="3" value="20"/> Minutes
-    <input id="newGame" type="submit" value="Start">
-    <input id="stopGame" type="submit" value="Stop">
-  </p>
+  <h1>
+    <img src="./nick.jpeg" id="nick_pic">
+    Nick Says Do This Many Burpees!
+  </h1>
 
   <div>
+    <span id="burpees">0</span>
+  </div>
+
+  <div id="progress_outer">
     <h2>
       Minute
       <span id="current_minute">0</span> of
@@ -42,8 +44,12 @@
     </h2>
   </div>
 
-  <div><h2><span id="burpees">0</span></h2></div>
-
+  <div id="controls">
+    <input id="minutes" type="number" step="1" pattern="\d+"  min="1" max="120" size="3" value="20"/> Minutes
+    <input id="newGame" type="submit" value="Start">
+    <input id="stopGame" type="submit" value="Stop">
+  </div>
+  </center>
 
   <script src="js/vendor/modernizr-3.11.2.min.js"></script>
   <script src="js/plugins.js"></script>
@@ -51,7 +57,7 @@
   <script src="js/NoSleep.min.js"></script>
   <script src="js/main.js"></script>
   <!--  Uncomment in dev-->
-<!--    <script src="js/live.js"></script>-->
+<!--    <script src="js/live.js"></script> -->
 
 </body>
 </html>

@@ -12,18 +12,26 @@ const min = 60;
 let minutes;
 let burpees;
 let total_minutes;
+let current_minute;
 
 /**
  * Burp!
  */
 async function burp(){
+
+  let end_beeps = 15;
+
+  // todo - get this working so it actually resets when click "start" more than once
+  // for now, it just reloads ¯\_(ツ)_/¯
+  // stopGame();
+
   minutes = $('#minutes').val();
   total_minutes = minutes;
   burpees = 0;
   console.log('start: ' + total_minutes);
 
   $('#total_minutes').html(minutes);
-  let current_minute;
+
   while (minutes > 0) {
     new ProgressCountdown(min);
     current_minute = total_minutes - minutes + 1;
@@ -36,10 +44,9 @@ async function burp(){
     minutes--;
   }
 
-  let end_beeps = 20;
   while (end_beeps > 0) {
     beep();
-    await sleep((min * 50));
+    await sleep((150));
     end_beeps--;
   }
 
@@ -53,14 +60,7 @@ $('#newGame').click(function (){
 
 // add click handler for the button to end the game and reset everything
 $('#stopGame').click(function (){
-  minutes = 0;
-  total_minutes = 0;
-  current_minute = 0;
-  burpees = 0;
-  $('#total_minutes').html(minutes);
-  $('#current_minute').html(current_minute);
-  $('#burpees').html(burpees);
-  clearInterval(countdownTimer);
+  stopGame();
 })
 
 /**
@@ -104,4 +104,24 @@ function ProgressCountdown(timeleft, board) {
       clearInterval(countdownTimer);
     }
   }, 1000);
+}
+
+/**
+ * Reset the all timers and set all counters to zero
+ */
+function stopGame(){
+
+  // for now, it just reloads ¯\_(ツ)_/¯
+  window.location.reload(false);
+
+  // todo - get this to work and actually reset
+  // minutes = 0;
+  // total_minutes = 0;
+  // current_minute = 0;
+  // burpees = 0;
+  // $('#total_minutes').html(minutes);
+  // $('#current_minute').html(current_minute);
+  // $('#burpees').html(burpees);
+  // clearInterval(countdownTimer);
+  // console.log('stopped');
 }

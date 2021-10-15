@@ -232,13 +232,41 @@ textarea {
    Burpee Stuffs
    ========================================================================== */
 
-#burpees {
-  font-size: 200pt;
+body {
+  font-size: 200%;
+  margin: 20px
 }
 
-body {
-  font-size: 300%;
+div {
+  clear: both;
 }
+
+progress {
+  height: .5em;
+  -webkit-appearance: none;
+}
+
+h1 {
+  width: 700px;
+}
+
+#burpees {
+  font-size: 200pt;
+  font-weight: bold;
+}
+
+#progress_outer{
+  padding-top: 15px;
+}
+
+#nick_pic {
+  width: 200px;
+  float: left;
+  padding: 4px;
+  margin: 10px;
+  border: 1px black solid;
+}
+
 
 /* ==========================================================================
    EXAMPLE Media Queries for Responsive Design.
