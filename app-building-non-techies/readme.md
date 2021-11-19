@@ -12,7 +12,7 @@ Step by step how app builders make a [CHT](https://communityhealthtoolkit.org/) 
   
 [this preso on GH](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building-non-techies)
 
-[![medic logo](./medic-mobile-logo+name-white.svg)](https://medicmobile.org)
+[![medic logo](./images/medic-mobile-logo+name-white.svg)](https://medicmobile.org)
 
 ---
 
@@ -47,7 +47,7 @@ Command line utility:
 
 ## `cht-conf` 
 
-Push updated "MRDT" form:
+Example: Update "test_form" form:
 
 ```shell
 cht \
@@ -60,7 +60,9 @@ cht \
 
 ---
 
-## `cht-conf` example: push updated "MRDT" form
+## `cht-conf`
+
+Example: Result from "test_form" form:
 
 ```shell
 INFO Processing config in covid-19. 
@@ -84,14 +86,13 @@ INFO upload-app-forms complete.
 INFO All actions completed.
 ```
 
-
 ---
 
 ## gsheets
 
 Easy Sharing and Revisions vs GitHub
 
-![GSheets Sample](./gsheets.sample.png)
+![GSheets Sample](./images/gsheets.sample.png)
 
 ---
 
@@ -101,41 +102,18 @@ Easy Sharing and Revisions vs GitHub
 
 Copy from GDrive -> local .xlsx
 
-App builders start with an existing gsheet
+App builders start by copying a gsheet - this talk will use `test_form`
 
 ---
 
 ## edit synched forms 
  
 `forms-on-google-drive.json` JSON config file:
-
     
  ```json
 {
     "app/test_form.xlsx": "1OX87YC6kAOvBgttjUhBL6fMdFSk",
-    "app/results.xlsx": "YC6kAOvBgttjUhBL6fMdFSkd3dksfjks",
 }
-``` 
-
----
-
-## Errors on CLI 
- 
-One extra "`,`" in `forms-on-google-drive.json` JSON config file:
-
-```shell
-INFO Processing config in covid-19. 
-INFO Actions:
-     - fetch-forms-from-google-drive
-     - convert-app-forms
-     - upload-app-forms 
-INFO Starting action: fetch-forms-from-google-drive… 
-WARN Error parsing JSON in: /home/mrjones/Documents/MedicMobile/cht-core/config/covid-19/forms-on-google-drive.json 
-ERROR SyntaxError: Unexpected token } in JSON at position 168
-    at JSON.parse (<anonymous>)
-    at Object.readJson (/usr/lib/node_modules/cht-conf/src/lib/sync-fs.js:29:17)
-    at /usr/lib/node_modules/cht-conf/src/lib/fetch-files-from-google-drive.js:12:24
-    at processTicksAndRejections (internal/process/task_queues.js:97:5) 
 ``` 
 
 ---
@@ -145,25 +123,58 @@ ERROR SyntaxError: Unexpected token } in JSON at position 168
 test export to local file:
 
 ```shell
-cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive 
+cht --url=http://admin:pass@localhost:5988 \
+  fetch-forms-from-google-drive 
 ```
 
 note that `cht-conf` allows you to string together multiple commands
 
 ---
 
+## Errors on CLI 
+
+Bad "`,`" in config file:
+
+<pre class="hljs">
+$ cht fetch-forms-from-google-drive
+
+INFO Processing config in default. 
+INFO Actions:
+     - fetch-forms-from-google-drive 
+INFO Starting action: fetch-forms-from-google-drive… 
+WARN Error parsing JSON in: /home/mrjones/Documents/MedicMobile/cht-core/config/default/forms-on-google-drive.json
+<span style="color:red">ERROR SyntaxError: Unexpected token } in JSON at position 74
+    at JSON.parse (<anonymous>)
+    at Object.readJson (/usr/lib/node_modules/cht-conf/src/lib/sync-fs.js:29:17)
+    at /usr/lib/node_modules/cht-conf/src/lib/fetch-files-from-google-drive.js:12:24
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+</span></pre>
+
+---
+
 ## export -> convert ->  upload
 
-Let's import our new one by adding convert-app-forms (xlsx -> xml) and upload-app-forms (xml -> CHT):
+Let's import our new `test_form` by adding convert-app-forms (xlsx -> xml) and upload-app-forms (xml -> CHT):
 
 ```shell
-cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive convert-app-forms upload-app-forms -- test_form
+cht --url=http://admin:pass@localhost:5988 \
+  fetch-forms-from-google-drive \
+  convert-app-forms upload-app-forms \
+  -- test_form
 ```
+
+---
+
+## export -> convert ->  upload
 
 see if it's there!
 
 1. http://localhost:5988/#/reports/
-1. submit report: Test Form
+2. Submit report
+3. Test Form
+
+
+![Test Form Test](./images/test.form.test.png)
 
 ---
 
@@ -171,16 +182,15 @@ see if it's there!
 
 Before we start form building, let's set some properties via the `forms/app/test_form.properties.json`:
 
-    {
-        "title": "Test Form",
-        "icon": "draft-icon",
-        "context": {
-            "person": true,
-            "place": false,
-            "expression": "contact.type === 'person' && summary.alive && (!contact.date_of_birth ||  ageInYears(contact) < 5)"
-        }
-    }
-
+```json
+{ "title": "Test Form",
+"icon": "icon-person",
+"context": {
+    "person": true,
+    "place": false,
+    "expression": "contact.type === 'person' && summary.alive && (!contact.date_of_birth ||  ageInYears(contact) < 5)"
+}}
+```
 ---
 
 ## Go faster `cht-conf`
@@ -188,7 +198,12 @@ Before we start form building, let's set some properties via the `forms/app/test
 Add `upload-resources` to the `cht` to send the json as well:
 
 ```shell
-cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+cht --url=http://admin:pass@localhost:5988 \
+  fetch-forms-from-google-drive \
+  upload-resources \
+  convert-app-forms \
+  upload-app-forms \
+  -- test_form
 ```
 
 ---
@@ -199,15 +214,15 @@ Back on your server, form is no longer available anywhere but on patients who ar
 
 http://localhost:5988/#/reports/
 
+![Test Form New Home](./images/now.test.form.home.png)
+
 ---
 
 ## xforms structure
 
-* Inputs
-* Top level calculation fields
-* Pages of questions
-* Summary page
-* Data outputs
+Inputs - Calculated - Questions - Summary - Outputs
+
+![Anatomy](./images/anotomy.png)
 
 ---
 
@@ -217,11 +232,8 @@ Let's add some questions!
 
 Below "Top level calculation fields", add a bunch of 
 blank lines and copy the first note
-    
-```
-note	register_note	Welcome to my first form
-```
-[source](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building#your-1st-line-of-xform-code)
+
+![First Note](./images/first.note.png)
 
 ---
 
@@ -229,8 +241,14 @@ note	register_note	Welcome to my first form
 
 re-run our fave cht command (you could trim off "upload-resources")
 
+
 ```shell
-cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+cht --url=http://admin:pass@localhost:5988 \
+  fetch-forms-from-google-drive \
+  upload-resources \
+  convert-app-forms \
+  upload-app-forms \
+  -- test_form
 ```
 
 ---
@@ -239,9 +257,8 @@ cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-
 
 reload the form in the browser and you should see your note
 
-you are now an app builder!
+![First Screen](./images/first.appscreen.png)
 
-Note : fastest to cancel and start again vs reload
 
 ---
 
@@ -249,140 +266,113 @@ Note : fastest to cancel and start again vs reload
 
 let's add a date input after the note
 
-```text
-date	fave_past_date	What's your fave past date?
-```
-[source](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building#now-with-100-more-dates)
+![Second Input](./images/2nd.screen.png)
+
 
 ---
 
-## Rinse and repeat & reload reload reload 
+## Rinse and repeat 
 
-re-run our fave cht command & reload the browser. note it's on page two of form
+re-run our fave `cht` command
 
 ```shell
-cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+cht --url=http://admin:pass@localhost:5988 \
+  fetch-forms-from-google-drive \
+  upload-resources \
+  convert-app-forms \
+  upload-app-forms \
+  -- test_form
 ```
+
+---
+
+##  reload reload reload 
+
+Reload the browser & note it's on two seperate pages:
+
+![Second Screen](./images/2nd.screen.app.png)
+
+
 ---
 
 ## field-list 
 
-let's put the two on one page
-   
-```text
-begin group	hello_world	Hello World App!									field-list
-note	welcome_note	Welcome to my first form									
-date	fave_past_date	What's your fave past date?									
-end group	
+Let's put the two on one page & and ensure only past dates via a constraints:
+
+![Grouped](./images/grouped.with.constraint.png)
+
 ```
-
----
-
-## constraints
-
-Let's ask  them about past dates by adding this to constraints:
-
-```text
 decimal-date-time(.) < floor(decimal-date-time(today()))
 ```
 
 ---
 
-## Rinse and repeat & reload reload reload
+## Rinse and repeat 
 
-re-run our fave cht command & reload the browser. note it's on page two of form
+re-run our fave `cht` command 
 
 ```shell
-cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
-```
-
----
-
-## select one
-
-let's only show the date if they like old dates. add this above the date row:
-
-```text
-select_one yes_no	old_dates	Do you like old dates?
-```
-
-Note values in "choices" tab
-
----
-
-## relevant
-
-and now, add this to "relevant" column for the date input:
-
-
-```text
-selected(${old_dates}, 'yes')
-```
-
-Tell the user how to fix bad data! In "constraint_message::en" field, add:
-
-```text
-The date must be in the past.
+cht --url=http://admin:pass@localhost:5988 \
+  fetch-forms-from-google-drive \
+  upload-resources \
+  convert-app-forms \
+  upload-app-forms \
+  -- test_form
 ```
 
 ---
 
 ## Rinse and repeat & reload reload reload
 
-re-run our fave cht command & reload the browser. note it's on page two of form
+Note it's on one page and there's a constraint:
 
-```shell
-cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
-```
+![Grouped and constrained](./images/grouped.with.constraint2.png)
 
 ---
 
 ## calculate 
 
-finally, let's calculate something! 100 years after the date.  Add a row in the above "calculate" section:
+Finally, let's ask if they like old dates and calculate 100 years later:
 
-    calculate	hundred_years	NO_LABEL																		format-date-time(date-time(floor(decimal-date-time(${fave_past_date})) + 36525), "%Y-%m-%d")															
+![Final sheets edit](./images/final.edit.png)
 
-And then add this as the last row in your group:
-
----
-
-## Completed form
-
-```text
-begin group	hello_world	Hello World App!									field-list		
-note	welcome_note	Welcome to my first form											
-select_one yes_no	old_dates	Do you like old dates?											
-date	fave_past_date	What's your fave past date?								selected(${old_dates}, 'yes')		decimal-date-time(.) < floor(decimal-date-time(today()))	The date must be in the past.
-note	hundred_note	This is the date in 100 years from your date: ${hundred_years}								decimal-date-time(${fave_past_date}) < floor(decimal-date-time(today()))			
-end group
+```
+format-date-time(
+    date-time(
+        floor(
+            decimal-date-time(
+                ${fave_past_date})) + 36525), "%Y-%m-%d")
 ```
 
 ---
 
-## Rinse and repeat & reload reload reload 
+## Rinse and repeat 
 
-re-run our fave cht command & reload the browser. note it's on page two of form
+re-run our fave `cht` command
 
 ```shell
-cht --url=http://admin:pass@localhost:5988 fetch-forms-from-google-drive upload-resources convert-app-forms upload-app-forms -- test_form
+cht --url=http://admin:pass@localhost:5988 \
+  fetch-forms-from-google-drive \
+  upload-resources \
+  convert-app-forms \
+  upload-app-forms \
+  -- test_form
 ```
 
 a fitting end - you do this SO. MANY. TIMES. ;)
-
 ---
 
-## Next time
+## Our first app completed
 
-* [Tasks](https://docs.communityhealthtoolkit.org/apps/reference/tasks/)
-* [Targets](https://docs.communityhealthtoolkit.org/apps/reference/targets/)
+
+![Final App](./images/all.together.now.png)
 
 ---
 
 ## Thanks!
 
 * By: [mrjones](https://github.com/mrjones-plip)
-* Source: [app-building repo](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building)
+* Source: [app-building-non-techies repo](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building-non-techies)
 * Made: [reveal-md](https://github.com/webpro/reveal-md)
 
-[![medic logo](./medic-mobile-logo+name-white.svg)](https://medicmobile.org)
+[![medic logo](./images/medic-mobile-logo+name-white.svg)](https://medicmobile.org)
