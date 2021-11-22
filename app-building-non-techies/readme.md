@@ -12,7 +12,7 @@ Step by step how app builders make a [CHT](https://communityhealthtoolkit.org/) 
   
 [this preso on GH](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building-non-techies)
 
-[![medic logo](./images/medic-mobile-logo+name-white.svg)](https://medicmobile.org)
+[![medic logo](./medic-mobile-logo+name-white.svg)](https://medicmobile.org)
 
 ---
 
@@ -33,7 +33,7 @@ Step by step how app builders make a [CHT](https://communityhealthtoolkit.org/) 
 
 Use `cht-conf` and the browser to:
 
-gsheets -> xlsx -> xml -> upload -> data entry & recalculating -> submit -> sync -> JSON
+Google Sheets -> xlsx -> xml -> upload -> data entry & recalculating -> submit -> sync -> JSON
 
 ---
 
@@ -88,19 +88,19 @@ INFO All actions completed.
 
 ---
 
-## gsheets
+## Google Sheets
 
 Easy Sharing and Revisions vs GitHub
 
-![GSheets Sample](./images/gsheets.sample.png)
+![Google Sheets Sample](./images/gsheets.sample.png)
 
 ---
 
-##  gsheets
+##  Google Sheets
 
 `fetch-forms-from-google-drive`
 
-Copy from GDrive -> local .xlsx
+Copy from Google Drive -> local .xlsx
 
 App builders start by copying a gsheet - this talk will use `test_form`
 
@@ -253,7 +253,7 @@ cht --url=http://admin:pass@localhost:5988 \
 
 ---
 
-## reload reload reload 
+## reload 
 
 reload the form in the browser and you should see your note
 
@@ -286,7 +286,7 @@ cht --url=http://admin:pass@localhost:5988 \
 
 ---
 
-##  reload reload reload 
+##  reload 
 
 Reload the browser & note it's on two seperate pages:
 
@@ -322,7 +322,7 @@ cht --url=http://admin:pass@localhost:5988 \
 
 ---
 
-## Rinse and repeat & reload reload reload
+## reload
 
 Note it's on one page and there's a constraint:
 
@@ -375,4 +375,4 @@ a fitting end - you do this SO. MANY. TIMES. ;)
 * Source: [app-building-non-techies repo](https://github.com/mrjones-plip/mrjones-medic-scratch/tree/main/app-building-non-techies)
 * Made: [reveal-md](https://github.com/webpro/reveal-md)
 
-[![medic logo](./images/medic-mobile-logo+name-white.svg)](https://medicmobile.org)
+[![medic logo](./medic-mobile-logo+name-white.svg)](https://medicmobile.org)
