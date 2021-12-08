@@ -10,6 +10,10 @@ Thanks Nick!
 
 ## Running
 
+The easiest way to run is to [see the demo page](https://mrjones-plip.github.io/mrjones-medic-scratch/burpees-for-nick/).
+
+Here's how to run it yourself:
+
 1. Clone this repo: `git clone https://github.com/mrjones-plip/mrjones-medic-scratch`
 2. Open `index.html` in your favorite browser
 3. Choose minutes and click "Start"
