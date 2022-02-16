@@ -56,3 +56,16 @@ This is by far the simplest practice - effectively no steps are needed in the CH
 * Humans and computers alike looking at the CHT, CouchDB and Posgtress can **NOT** tell both who was giving the care, and when the switch happened between caregivers.
 * If the old CHW returns and you want to keep both CHWs active, you're stuck creating a new contact and user AND getting a new device.
 * Insecure - the old CHW can still log in on another device
+
+
+## How do you manage the lists of information, such as surname, telephone number, village etc., before the users exist in the CHT?
+
+Operational security is paramount when it comes to lists of usernames and passwords. The ideal practice could be to create a spreadhsheet with full name, telephone number etc.  Included is a username but NOT a password. When users are created in bulk via the command line, have [magic links](https://docs.communityhealthtoolkit.org/apps/concepts/access/#magic-links-for-logging-in) sent to the user via an [SMS gateway](https://docs.communityhealthtoolkit.org/apps/guides/messaging/gateways/). This avoids the problem of passwords being stored in clear text in the spreadsheet or on a printed version.
+
+An alternate, and also secure approach, is to bulk create the users as described above, not use magic links, and use random passwords that you do not save. At a later time, manually change each user's password as you're provision their mobile device.  This also prevents a list of passwords from being stored in clear text.
+
+Unfortunately, we know of many deployments that bulk create all users with near identical passwords that are then printed out or shared via email.  This is poor security practice and should be avoided if possible.
+
+## What are some of the best practices that medium to large deployments of the CHT use to manage their users?
+
+Beyond what is stated above, I did not get additional input from folks I talked to about this. I would love to hear what others here on the forum have to say! As well, we're covering this on the next [Round-up call](https://forum.communityhealthtoolkit.org/t/cht-round-up-call-thursday-february-24-2022/1722).
