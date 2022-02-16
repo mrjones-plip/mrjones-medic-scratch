@@ -37,7 +37,7 @@ If you want to deactivate the old CHW
 
 ### Edit existing contact,  user and  place
 
-This is straightforward and a single step: just change the name on the 3 records.  This practice is not recommended, but offers a lot of real world benefits.
+This is straightforward and a single step: just change the name on the 3 records. To make it a secure option, you need to change the CHW password and re-login.  This practice is not recommended, but offers a lot of real world benefits.
 
 #### Pros
 * Very few steps to set up
@@ -46,20 +46,19 @@ This is straightforward and a single step: just change the name on the 3 records
 #### Cons
 * Humans and computers alike looking at the CHT, CouchDB and Posgtress can **NOT** tell both who was giving the care, and when the switch happened between caregivers.
 * If the old CHW returns and you want to keep both CHWs active, you're stuck creating a new contact and user.
-* Insecure - the old CHW can still log in on another device
+
 
 ### Handing the mobile phone from one CHW to another
 
-This is by far the simplest practice - effectively no steps are needed in the CHT.  It comes with many draw backs and is not recommended. The pros and cons are similar to prior option.
+This is by far the simplest practice - effectively no steps are needed in the CHT.  It comes with many draw backs and is not recommended. To make it a secure option, you need to change the CHW password and re-login.  The pros and cons are similar to prior option.
 
 #### Pros
-* No setup
+* No setup, leave changing the password
 * No extra CHW user and contact left to linger
 
 #### Cons
 * Humans and computers alike looking at the CHT, CouchDB and Posgtress can **NOT** tell both who was giving the care, and when the switch happened between caregivers.
 * If the old CHW returns and you want to keep both CHWs active, you're stuck creating a new contact and user AND getting a new device.
-* Insecure - the old CHW can still log in on another device
 
 
 ## How do you manage the lists of information, such as surname, telephone number, village etc., before the users exist in the CHT?
