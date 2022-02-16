@@ -12,12 +12,16 @@ I found a number of real world practices that I wanted to spell out the pros and
 
 This is best practice.  The steps are:
 
-1. Have the old CHW do one last sync to ensure all data is pushed up from their device
 1. Create a new contact for the new CHW.
 1. Make this contact the new primary contact for the old CHW's place - do not create a new place!
 1. Change the name the CHW's place as needed
 1. Create a new user  associated to the new contact.
-1. Change the password for the old CHW's user.
+
+If you want to deactivate the old CHW
+
+1. Have the old CHW do one last sync to ensure all data is pushed up from their device
+1. Change the password for the old CHW's user on the server
+1. Wipe the user's device to clear any private health information
 
 #### Pros
 * No data loss from one CHW to another
