@@ -10,7 +10,7 @@ I found a number of real world practices that I wanted to spell out the pros and
 
 ### New contact & new user, associate with existing place
 
-This is top most recommended practice.  The steps are:
+This is best practice.  The steps are:
 
 1. Have the old CHW do one last sync to ensure all data is pushed up from their device
 1. Create a new contact for the new CHW.
