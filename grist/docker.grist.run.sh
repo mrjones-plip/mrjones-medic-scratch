@@ -1,0 +1,1 @@
+docker run --env-file grist.env -p 8484:8484 -v $PWD/persist:/persist -it gristlabs/grist
