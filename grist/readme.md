@@ -1,6 +1,6 @@
 # setting up grist in dev env
 
-**NB - there's private keys and passwords in here.  I know that! DO NOT USE THEM ANYWHERE BUT LOCAL DEV! Yes, all caps. You've been warned.**
+**NB - there are private keys and passwords in here.  I know that! DO NOT USE THEM ANYWHERE BUT LOCAL DEV! Yes, all caps. You've been warned.**
 
 Some quick notes about what I did to get my local dev env going:
 * read [the forum post](https://community.getgrist.com/t/grist-core-multi-user-docker-setup/666) about getting it set up in docker to understand the problem space
